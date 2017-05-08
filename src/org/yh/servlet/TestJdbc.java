@@ -8,7 +8,7 @@ public class TestJdbc
 		JDBCUtil.insert(new User("Bean", 14));
 		JDBCUtil.getAll();
 		JDBCUtil.update(new User("Bean",7));
-		//JDBCUtil.delete("Achilles");
+		JDBCUtil.delete("Achilles");
 		JDBCUtil.getAll();
 	}
 }
