@@ -1,5 +1,6 @@
 package org.yh.servlet;
 
+@Table("tb_user")
 public class User
 {
 	private int id;
@@ -41,6 +42,12 @@ public class User
 	public void setAge(int age)
 	{
 		this.age = age;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "User [id=" + id + ", name=" + name + ", age=" + age + "]";
 	}
 
 }
