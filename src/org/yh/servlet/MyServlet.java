@@ -1,6 +1,8 @@
 package org.yh.servlet;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,17 +13,19 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class MyServlet
  */
-@WebServlet("/A.do")
+@WebServlet("/a.do")
 public class MyServlet extends HttpServlet
 {
 	private static final long serialVersionUID = 1L;
-
+	JDBCUtil jdbcUtil = null;
+	Map<String, Object> reulst = null; //结果 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public MyServlet()
 	{
 		super();
+		jdbcUtil = new JDBCUtil();
 	}
 
 	/**
@@ -30,36 +34,45 @@ public class MyServlet extends HttpServlet
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		//根据参数名获取参数值
-//		Enumeration<String> em = request.getParameterNames();
-//		while (em.hasMoreElements())
-//		{
-//			String name = (String) em.nextElement();
-//			String value = request.getParameter(name);
-//			System.out.println(value+"");
-//		}
-		String result = "";
+		// 根据参数名获取参数值
+		// Enumeration<String> em = request.getParameterNames();
+		// while (em.hasMoreElements())
+		// {
+		// String name = (String) em.nextElement();
+		// String value = request.getParameter(name);
+		// System.out.println(value+"");
+		// }
 		String name = request.getParameter("name");
 		String pass = request.getParameter("pass");
-		if (null == name)
+		User user = jdbcUtil.getByName(name);
+		reulst = new HashMap<String, Object>();
+		if (null == name || "".equals(name))
 		{
-			result = "用户名不能为空！";
-		}else if(null == pass)
+			reulst.put("reulst", 1);
+			reulst.put("error", "用户名不能为空！");
+		} else if (null == pass || "".equals(pass))
 		{
-			result = "密码不能为空！";
-		}else if(!name.equals("youhao"))
+			reulst.put("reulst", 2);
+			reulst.put("error", "密码不能为空！");
+		} else if (null == user)
 		{
-			result = "用户名错误！";
-		}else if(!pass.equals("123456"))
+			reulst.put("reulst", 3);
+			reulst.put("error", "用户名错误！");
+		} else if (!jdbcUtil.md5(pass).equals(user.getPass()))
 		{
-			result = "密码错误！";
-		}else
+			reulst.put("reulst", 4);
+			reulst.put("error", "密码错误！");
+		} else
 		{
-			result = "登录成功";
+			reulst.put("reulst", 0);
+			reulst.put("error", "登录成功");
 		}
-		
+		// 解决中文乱码问题
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().append("Served at: ").append(request.getContextPath()).append("  "+result);
+		response.setHeader("content-type", "text/html;charset=UTF-8");
+		//response.getWriter().append("Served at: ").append(request.getContextPath()).append("  " + result);
+		//response.getWriter().println("1111");
+		ResponseJsonUtils.json(response, reulst);
 	}
 
 	/**

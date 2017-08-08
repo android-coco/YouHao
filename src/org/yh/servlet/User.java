@@ -6,13 +6,10 @@ public class User
 	private int id;
 	private String name;
 	private int age;
+	private String pass;
 
-	User(String name, int age)
-	{
-		this.id = 0; // default
-		this.name = name;
-		this.age = age;
-	}
+	
+	public User(){};
 
 	public int getId()
 	{
@@ -43,11 +40,19 @@ public class User
 	{
 		this.age = age;
 	}
+	public String getPass()
+	{
+		return pass;
+	}
+	public void setPass(String pass)
+	{
+		this.pass = pass;
+	}
 
 	@Override
 	public String toString()
 	{
-		return "User [id=" + id + ", name=" + name + ", age=" + age + "]";
+		return "User [id=" + id + ", name=" + name + ", age=" + age + ", pass=" + pass + "]";
 	}
 
 }

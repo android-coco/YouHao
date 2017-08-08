@@ -16,7 +16,7 @@
 		and this JSP page worked!
 	</h1>
 
-	<form action="A.do" method="post">
+	<form action="a.do" method="post">
 		<p>
 			用户名: <input type="text" name="name" />
 		</p>
